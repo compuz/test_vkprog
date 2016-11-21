@@ -47,7 +47,7 @@ gm.add('myGame', function () {
         if (io.isKeyDown('S')) r1.move(v2f(0, 1));
         if (io.isKeyDown('A')) r1.move(v2f(-1, 0));
         if (io.isKeyDown('D')) r1.move(v2f(1, 0));
-        r1.move(v2f(1, 0);
+        r1.move(v2f(1, 0));
         if (io.isTouch()) b2.drawSimpleText('IS TOUCH');
         if (io.isTouchTap()) console.log('touchTap', io.getPosition());
         if (io.isTouchHold()) console.log('touchHold', io.getPosition());
