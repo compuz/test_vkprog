@@ -13,6 +13,8 @@ var io = j2Ds.getIO();
 var lr = j2Ds.getLayerManager();
 var gm = j2Ds.getGameStateManager();
 var err = j2Ds.getErrorManager();
+var textureManager = j2Ds.getTextureManager();
+
 
 scene.init(500, 300);
 scene.setAutoClear(true);
@@ -20,6 +22,7 @@ scene.setAutoClear(true);
 lr.add('back', -1).fill('black');
 
 var b = scene.addTextNode(v2f(5, 270), '', 30, 'white', '', 1, 'black');
+var mouse_pos_text = scene.addTextNode(v2f(120, 275), '', 20, 'white', '', 1, 'black'); // координаты
 var b2 = scene.addTextNode(v2f(5, 240), '', 30, 'white', '', 1, 'black');
 var f = scene.addTextNode(v2f(300, 270), '', 30, 'white', '', 1, 'black');
 var r1 = scene.addRectNode(v2f(40, 40), v2f(50, 50), 'red');
@@ -41,9 +44,14 @@ r1.box = r2.box = r3.box = {
     }
 };
 
+var imageMap = textureManager.loadImageMap('anim_sprite.png');
+var anim1 = imageMap.getAnimation(1, 0, 16, 30, 3);
+var a = scene.addSpriteNode(v2f(270, 200),v2f(16,30), anim1);
+
 gm.add('myGame', function () {
     try {
-        if (io.isKeyDown('W')) r1.move(v2f(0, -1));
+		//console.log(io.isKeyDown('W'));
+        if (io.isKeyDown('UP')) { console.log("Пробел!!!"); r1.move(v2f(0, -1)) } ;
         if (io.isKeyDown('S')) r1.move(v2f(0, 1));
         if (io.isKeyDown('A')) r1.move(v2f(-1, 0));
         if (io.isKeyDown('D')) r1.move(v2f(1, 0));
@@ -55,14 +63,45 @@ gm.add('myGame', function () {
         b.drawSimpleText(io.onNode([r1, r2, r3]) ? 'TRUE' : 'FALSE');
         //b.drawSimpleText(r1.isIntersect([r2, r3]) ? 'TRUE' : 'FALSE');
         f.drawSimpleText('FPS: ' + fps.getFPS());
+		mouse_pos_text.drawSimpleText("x:" + io.getPosition().x + " / y:"+ io.getPosition().y);
 
         r1.draw();
         r2.draw();
         r3.draw();
+		a.draw(3);
+		//a.drawBox();
 
         r1.drawBox();
         r2.drawBox();
         r3.drawBox();
+		
+		//console.log(io.anyKey);
+		
+    } catch (e) {
+        console.error(e.message);
+        console.error(e.stack);
+    }
+}, function () {
+	//console.log(io.keyList());
+    err.show('Уровень начался');
+});
+gm.add('myGame2', function () {
+    try {
+        
+
+        b.drawSimpleText(io.onNode([r1, r2, r3]) ? 'Да' : 'FALSE');
+        //b.drawSimpleText(r1.isIntersect([r2, r3]) ? 'TRUE' : 'FALSE');
+        f.drawSimpleText('FPS: ' + fps.getFPS());
+
+        r1.draw();
+        r2.draw();
+        r3.draw();
+        
+        r1.drawBox();
+        r2.drawBox();
+        r3.drawBox();
+		
+		r2.turn(1);
     } catch (e) {
         console.error(e.message);
         console.error(e.stack);
@@ -71,4 +110,4 @@ gm.add('myGame', function () {
     err.show('Уровень начался');
 });
 
-scene.start('myGame', 60);
+scene.start('myGame', 30);
